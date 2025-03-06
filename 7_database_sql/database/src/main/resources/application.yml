@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: database
+
+  datasource:
+    # postgres a Database connecting with jdbc
+    # Format: jdbc:postgresql://<host_address>:<port_number>/<database_name>
+    url: jdbc:postgresql://localhost:5432/spring-boot
+#    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+
+#  The schema.sql(first) and data.sql(second) will be ran everytime the application starts
+  sql:
+    init:
+      mode: always

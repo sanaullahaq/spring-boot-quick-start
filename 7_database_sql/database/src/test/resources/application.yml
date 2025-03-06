@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    # testDB an in-memory H2 Database connecting with jdbc
+    url: jdbc:h2:mem:testDB;MODE=PostgresSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+
+
+#This is a JDBC URL used to configure an H2 in-memory database with specific settings. Let's break it down:
+#
+#  jdbc:h2:mem:testDB
+#
+#  jdbc:h2 → Specifies the H2 database driver.
+#  mem:testDB → Uses an in-memory database named testDB (data is lost when the application shuts down).
+#  MODE=PostgreSQL
+#
+#  Configures H2 to behave like PostgreSQL, making it easier to migrate or test applications originally designed for PostgreSQL.
+#  DATABASE_TO_LOWER=TRUE
+#
+#  Ensures all unquoted identifiers (e.g., table/column names) are automatically converted to lowercase, similar to PostgreSQL behavior.
+#  DEFAULT_NULL_ORDERING=HIGH
+#
+#  Sets the default ordering of NULL values in ORDER BY clauses.
+#  HIGH means NULL values will be treated as the highest values (i.e., they will appear last in ascending order and first in descending order).
+#  This configuration is useful for testing applications that use PostgreSQL but need an in-memory database for quick setup and teardown.

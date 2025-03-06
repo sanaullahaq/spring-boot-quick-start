@@ -3,7 +3,7 @@ spring:
     name: database
 
   datasource:
-    # testDB a in memory H2 Database connecting with jdbc
+    # testDB an in-memory H2 Database connecting with jdbc
     url: jdbc:h2:mem:testDB
     driver-class-name: org.h2.Driver
     username: sa
