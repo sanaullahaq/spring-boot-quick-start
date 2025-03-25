@@ -4,14 +4,18 @@ import com.sana.database.dao.AuthorDao;
 import com.sana.database.domain.Author;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class AuthorDaoImpl implements AuthorDao {
+
     private final JdbcTemplate jdbcTemplate;
+
     public AuthorDaoImpl(final JdbcTemplate jdbcTemplate){
         this.jdbcTemplate=jdbcTemplate;
     }
@@ -33,6 +37,13 @@ public class AuthorDaoImpl implements AuthorDao {
                 "SELECT id, name, age FROM authors where id = ? LIMIT 1",
                 new AuthorRowMapper(), authorId);
         return results.stream().findFirst();
+    }
+
+    @Override
+    public List<Author> find() {
+        return jdbcTemplate.query(
+                "Select id, name, age From authors",
+                new AuthorRowMapper());
     }
 
     public static class AuthorRowMapper implements RowMapper<Author>{

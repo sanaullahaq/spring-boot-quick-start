@@ -1,5 +1,8 @@
+//Unit Test
+
 package com.sana.database.dao.impl;
 
+import com.sana.database.TestDataUtil;
 import com.sana.database.domain.Book;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,23 +25,28 @@ public class BooksDaoImplTests {
 
     @Test
     public void testThatCreateBookGeneratesCorrectSql(){
-        Book book = Book.builder()
-                .isbn("123-4-5678-9-0")
-                .title("The Shadow in the Attic")
-                .authorId(1L)
-                .build();
+        Book book = TestDataUtil.createTestBookA();
         underTest.create(book);
         verify(jdbcTemplate).update(
-                eq("INSERT INTO books (isbn, title, authorId) VALUES (?, ?, ?)"),
+                eq("INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)"),
                 eq("123-4-5678-9-0"), eq("The Shadow in the Attic"), eq(1L)
         );
     }
 
     @Test
-    public void testThatFindOneBookGeneratesCorrectSql(){
+    public void testThatFindOneGeneratesCorrectSql(){
         underTest.findOne("123-4-5678-9-0");
         verify(jdbcTemplate).query(
-                eq("SELECT isbn, title, authorId FROM books where isbn = ? LIMIT 1"),
+                eq("SELECT isbn, title, author_id FROM books where isbn = ? LIMIT 1"),
                 ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(), eq("123-4-5678-9-0"));
+    }
+
+    @Test
+    public void testThatFindManyGeneratesCorrectSql(){
+        underTest.find();
+        verify(jdbcTemplate).query(
+                eq("Select isbn, title, author_id From books"),
+                ArgumentMatchers.<BookDaoImpl.BookRowMapper>any()
+        );
     }
 }

@@ -1,5 +1,8 @@
+//Unit Test
+
 package com.sana.database.dao.impl;
 
+import com.sana.database.TestDataUtil;
 import com.sana.database.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,11 +27,7 @@ public class AuthorsDaoImplTests{
 //    The @Test annotation in JUnit 5 is used to mark a method as a test case. When you run your test class, JUnit will execute all methods annotated with @Test.
     @Test
     public void testThatCreateAuthorGeneratesCorrectSql(){
-        Author author = Author.builder()
-                .id(1L)
-                .name("Sanaulla")
-                .age(27)
-                .build();
+        Author author = TestDataUtil.createTestAuthorA();
 
         underTest.create(author);
         verify(jdbcTemplate).update(
@@ -44,6 +43,15 @@ public class AuthorsDaoImplTests{
                 eq("SELECT id, name, age FROM authors where id = ? LIMIT 1"),
                 ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),
                 eq(1L));
+    }
+
+    @Test
+    public void testThatFindManyGeneratesCorrectSql(){
+        underTest.find();
+        verify(jdbcTemplate).query(
+                eq("Select id, name, age From authors"),
+                ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any()
+        );
     }
 }
 
