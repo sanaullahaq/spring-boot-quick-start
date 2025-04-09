@@ -1,4 +1,4 @@
-package com.sana.database.dao.impl;
+package com.sana.database.repositories;
 
 import com.sana.database.TestDataUtil;
 import com.sana.database.domain.Author;
@@ -18,20 +18,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)//This will clear the Context (including DB) after each test method run
-public class AuthorDaoImplIntegrationTests {
+public class AuthorRepositoryIntegrationTests {
 
-    private AuthorDaoImpl underTest;
+    private AuthorRepository underTest;
 
     @Autowired
-    public AuthorDaoImplIntegrationTests(AuthorDaoImpl underTest){
+    public AuthorRepositoryIntegrationTests(AuthorRepository underTest){
         this.underTest = underTest;
     }
 
     @Test
     public void testThatAuthorCanBeCreatedAndRecalled(){
         Author author = TestDataUtil.createTestAuthorA();
-        underTest.create(author);
-        Optional<Author> result = underTest.findOne(author.getId());
+        underTest.save(author);
+        Optional<Author> result = underTest.findById(author.getId());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(author);
     }
@@ -39,13 +39,14 @@ public class AuthorDaoImplIntegrationTests {
     @Test
     public void testThatMultipleAuthorsCanBeCreatedAndRecalled(){
         Author authorA = TestDataUtil.createTestAuthorA();
-        underTest.create(authorA);
+        underTest.save(authorA);
         Author authorB = TestDataUtil.createTestAuthorB();
-        underTest.create(authorB);
+        underTest.save(authorB);
         Author authorC = TestDataUtil.createTestAuthorC();
-        underTest.create(authorC);
+        underTest.save(authorC);
 
-        List<Author> result = underTest.find();
+        Iterable<Author> result = underTest.findAll();
+        System.out.println(result);
 //        assertThat(result).hasSize(3);
 //        assertThat(result).containsExactly(authorA, authorB, authorC);
         assertThat(result)
@@ -57,11 +58,13 @@ public class AuthorDaoImplIntegrationTests {
     public void testThatAuthorCanBeUpdated(){
         Author authorA = TestDataUtil.createTestAuthorA();
 
-        underTest.create(authorA);
+        underTest.save(authorA);
+        System.out.println(authorA);
         authorA.setName("Updated");
 
-        underTest.update(authorA.getId(), authorA);
-        Optional<Author> result = underTest.findOne(authorA.getId());
+        underTest.save(authorA);
+        Optional<Author> result = underTest.findById(authorA.getId());
+        System.out.println(result);
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(authorA);
@@ -70,9 +73,10 @@ public class AuthorDaoImplIntegrationTests {
     @Test
     public void testThatAuthorCanBeDeleted(){
         Author authorB = TestDataUtil.createTestAuthorB();
-        underTest.create(authorB);
-        underTest.delete(authorB.getId());
-        Optional<Author> result = underTest.findOne(authorB.getId());
+        underTest.save(authorB);
+        underTest.delete(authorB);
+        Optional<Author> result = underTest.findById(authorB.getId());
+        System.out.println(result);
         assertThat(result).isEmpty();
     }
 }

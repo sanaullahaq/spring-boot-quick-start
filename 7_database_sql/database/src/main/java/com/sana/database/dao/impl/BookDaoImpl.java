@@ -27,6 +27,18 @@ public class BookDaoImpl implements BookDao {
                 book.getAuthorId());
     }
 
+    public static class BookRowMapper implements RowMapper<Book>{
+
+        @Override
+        public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return Book.builder()
+                    .isbn(rs.getString("isbn"))
+                    .title(rs.getString("title"))
+                    .authorId(rs.getLong("author_id"))
+                    .build();
+        }
+    }
+
     @Override
     public Optional<Book> findOne(String isbn) {
         List<Book> results = jdbcTemplate.query(
@@ -42,15 +54,14 @@ public class BookDaoImpl implements BookDao {
                 new BookRowMapper());
     }
 
-    public static class BookRowMapper implements RowMapper<Book>{
+    @Override
+    public void update(String isbn, Book bookA) {
+        jdbcTemplate.update("Update books SET isbn = ?, title = ?, author_id = ? Where isbn = ?",
+                bookA.getIsbn(), bookA.getTitle(), bookA.getAuthorId(), isbn);
+    }
 
-        @Override
-        public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return Book.builder()
-                    .isbn(rs.getString("isbn"))
-                    .title(rs.getString("title"))
-                    .authorId(rs.getLong("author_id"))
-                    .build();
-        }
+    @Override
+    public void delete(String isbn) {
+        jdbcTemplate.update("DELETE FROM books Where isbn = ?", isbn);
     }
 }

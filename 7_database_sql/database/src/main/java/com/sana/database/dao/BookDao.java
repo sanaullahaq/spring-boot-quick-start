@@ -11,4 +11,8 @@ public interface BookDao {
     Optional<Book> findOne(String isbn);
 
     List<Book> find();
+
+    void update(String isbn, Book bookA);
+
+    void delete(String isbn);
 }

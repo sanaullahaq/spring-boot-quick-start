@@ -30,6 +30,18 @@ public class AuthorDaoImpl implements AuthorDao {
         );
     }
 
+    public static class AuthorRowMapper implements RowMapper<Author>{
+
+        @Override
+        public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return Author.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .age(rs.getInt("age"))
+                    .build();
+        }
+    }
+
     @Override
     public Optional<Author> findOne(long authorId) {
 //        return Optional.empty();
@@ -46,15 +58,14 @@ public class AuthorDaoImpl implements AuthorDao {
                 new AuthorRowMapper());
     }
 
-    public static class AuthorRowMapper implements RowMapper<Author>{
+    @Override
+    public void update(long id, Author author) {
+        jdbcTemplate.update("Update authors SET id = ?, name = ?, age = ? Where id = ?",
+                author.getId(), author.getName(), author.getAge(), id);
+    }
 
-        @Override
-        public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return Author.builder()
-                    .id(rs.getLong("id"))
-                    .name(rs.getString("name"))
-                    .age(rs.getInt("age"))
-                    .build();
-        }
+    @Override
+    public void delete(long id) {
+        jdbcTemplate.update("DELETE From authors Where id = ?", id);
     }
 }
