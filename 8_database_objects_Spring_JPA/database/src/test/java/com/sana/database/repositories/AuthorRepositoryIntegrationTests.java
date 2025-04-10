@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,5 +77,41 @@ public class AuthorRepositoryIntegrationTests {
         Optional<Author> result = underTest.findById(authorB.getId());
         System.out.println(result);
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void testThatGetAuthorsWithAgeLessThan(){
+        Author authorA = TestDataUtil.createTestAuthorA();
+        Author authorB = TestDataUtil.createTestAuthorB();
+        Author authorC = TestDataUtil.createTestAuthorC();
+
+        underTest.save(authorA);
+        underTest.save(authorB);
+        underTest.save(authorC);
+
+        Iterable<Author> result = underTest.ageLessThan(50);
+        // custom query example
+        // no definition of ageLessThan() has been implemented, only the declaration in the interface.
+        // but Spring JPA is as smarter as it can understand what the function should do from its name.
+        // and it works
+        assertThat(result).containsExactly(authorB, authorC);
+    }
+
+    @Test
+    public void testThatGetAuthorsWithAgeGreaterThan(){
+        Author authorA = TestDataUtil.createTestAuthorA();
+        Author authorB = TestDataUtil.createTestAuthorB();
+        Author authorC = TestDataUtil.createTestAuthorC();
+
+        underTest.save(authorA);
+        underTest.save(authorB);
+        underTest.save(authorC);
+
+        Iterable<Author> result = underTest.findAuthorsWithAgeGreaterThan(50);
+        //HQL example
+        // no definition of findAuthorsWithAgeGreaterThan() has been implemented, only the declaration in the interface.
+        // but Spring JPA's smartness can't understand what the function should do from its complicated/ name.
+        // that's why in the functions declaration we need to provide hint in HQL format to the Spring JPA.
+        assertThat(result).containsExactly(authorA);
     }
 }
