@@ -108,7 +108,7 @@ public class AuthorRepositoryIntegrationTests {
         underTest.save(authorC);
 
         Iterable<Author> result = underTest.findAuthorsWithAgeGreaterThan(50);
-        //HQL example
+        //HQL (Hibernate Query Language) example
         // no definition of findAuthorsWithAgeGreaterThan() has been implemented, only the declaration in the interface.
         // but Spring JPA's smartness can't understand what the function should do from its complicated/ name.
         // that's why in the functions declaration we need to provide hint in HQL format to the Spring JPA.
