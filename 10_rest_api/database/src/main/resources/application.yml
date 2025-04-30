@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: database
+  jpa:
+    hibernate:
+      ddl-auto: update
+  #spring.jpa.hibernate.ddl-auto: update
+  #This configures how Hibernate should handle schema changes when your app starts.
+  #What does "update" do?
+  #It tells Hibernate to automatically update the database schema to match your entity classes.
+  #If you add a new field to an entity, it will try to add a new column in the corresponding table.
+  #If a table doesn’t exist, it will be created.
+  #But: It will not delete tables or columns that are no longer in your entity classes.
+
+
+  datasource:
+    # postgres a Database connecting with jdbc
+    # Format: jdbc:postgresql://<host_address>:<port_number>/<database_name>
+    url: jdbc:postgresql://localhost:5432/spring-boot
+#    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver

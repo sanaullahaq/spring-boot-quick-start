@@ -7,3 +7,6 @@ https://maven.apache.org/guides/introduction/introduction-to-the-standard-direct
 
 Common Application Properties:
 https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.core
+
+Object Mapper(Ex: Entity -> Data Transfer Object)
+https://modelmapper.org/
