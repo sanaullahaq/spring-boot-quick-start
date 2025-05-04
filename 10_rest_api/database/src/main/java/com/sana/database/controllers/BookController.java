@@ -1,7 +1,6 @@
 package com.sana.database.controllers;
 
 import com.sana.database.domain.dto.BookDto;
-import com.sana.database.domain.entities.AuthorEntity;
 import com.sana.database.domain.entities.BookEntity;
 import com.sana.database.mappers.Mapper;
 import com.sana.database.services.BookService;
@@ -75,7 +74,10 @@ public class BookController {
 
     @DeleteMapping(path = "/books/{isbn}")
     public ResponseEntity deleteBook(@PathVariable("isbn") String isbn){
-        bookService.delete(isbn);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if(bookService.isExists(isbn)){
+            bookService.delete(isbn);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
