@@ -36,13 +36,11 @@ public class BookControllerIntegrationTests {
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
         this.bookService = bookService;
-
     }
 
     @Test
     public void testThatCreateBookReturnsHttpStatus201Created() throws Exception {
-        BookDto testBookDtoA = TestDataUtil.createTestBookDtoA(
-                null);
+        BookDto testBookDtoA = TestDataUtil.createTestBookDtoA(null);
 
         String isbn = testBookDtoA.getIsbn();
         String bookJson = objectMapper.writeValueAsString(testBookDtoA);

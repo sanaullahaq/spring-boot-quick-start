@@ -4,6 +4,8 @@ import com.sana.database.domain.dto.BookDto;
 import com.sana.database.domain.entities.BookEntity;
 import com.sana.database.mappers.Mapper;
 import com.sana.database.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,12 +57,21 @@ public class BookController {
         return new ResponseEntity<>(bookMapper.mapTo(savedBookEntity), HttpStatus.OK);
     }
 
+//    //Without pagination
+//    @GetMapping(path = "/books")
+//    public List<BookDto> listBooks(){
+//        List<BookEntity> books = bookService.findAll();
+//        return books.stream()
+//                .map(bookMapper::mapTo)
+//                .toList();
+//    }
+
+    //With pagination
+    /*This pagination supports localhost:8080/books?size=X&page=X endpoints as well*/
     @GetMapping(path = "/books")
-    public List<BookDto> listBooks(){
-        List<BookEntity> books = bookService.findAll();
-        return books.stream()
-                .map(bookMapper::mapTo)
-                .toList();
+    public Page<BookDto> listBooks(Pageable pageable){
+        Page<BookEntity> books = bookService.findAll(pageable);
+        return books.map(bookMapper::mapTo);
     }
 
     @GetMapping(path = "/books/{isbn}")

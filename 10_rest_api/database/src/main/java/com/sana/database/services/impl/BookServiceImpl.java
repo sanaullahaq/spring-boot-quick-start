@@ -3,6 +3,8 @@ package com.sana.database.services.impl;
 import com.sana.database.domain.entities.BookEntity;
 import com.sana.database.repositories.BookRepository;
 import com.sana.database.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookEntity> findAll() {
         return (List<BookEntity>) bookRepository.findAll();
+    }
+
+    @Override
+    public Page<BookEntity> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     @Override
